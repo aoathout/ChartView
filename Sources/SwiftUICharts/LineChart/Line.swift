@@ -17,10 +17,12 @@ public struct Line: View {
     @Binding var maxDataValue: Double?
     @State private var showFull: Bool = false
     @State var showBackground: Bool = true
+    
     var gradient: GradientColor = GradientColor(start: Colors.GradientPurple, end: Colors.GradientNeonBlue)
     var index:Int = 0
-    let padding:CGFloat = 30
     var curvedLines: Bool = true
+    let padding:CGFloat = 30
+    
     var stepWidth: CGFloat {
         if data.points.count < 2 {
             return 0
@@ -34,7 +36,7 @@ public struct Line: View {
         if minDataValue != nil && maxDataValue != nil {
             min = minDataValue!
             max = maxDataValue!
-            print(min,max)
+//            print(min,max)
         }else if let minPoint = points.min(), let maxPoint = points.max(), minPoint != maxPoint {
             min = minPoint
             max = maxPoint
@@ -57,6 +59,31 @@ public struct Line: View {
     var closedPath: Path {
         let points = self.data.onlyPoints()
         return curvedLines ? Path.quadClosedCurvedPathWithPoints(points: points, step: CGPoint(x: stepWidth, y: stepHeight), globalOffset: minDataValue) : Path.closedLinePathWithPoints(points: points, step: CGPoint(x: stepWidth, y: stepHeight))
+    }
+    
+    /*
+     
+     Line(data: self.data,
+          frame: .constant(CGRect(x: 0, y: 0, width: reader.frame(in: .local).width - 30, height: reader.frame(in: .local).height)),
+           touchLocation: self.$indicatorLocation,
+          showIndicator: self.$hideHorizontalLines,
+          minDataValue: .constant(nil),
+          maxDataValue: .constant(nil),
+          showBackground: false
+     )
+     */
+    public init(data: ChartData, frame: Binding<CGRect>, touchLocation: Binding<CGPoint>, showIndicator: Binding<Bool>, minDataValue: Binding<Double?>, maxDataValue: Binding<Double?>, showFull: Bool = false, showBackground: Bool = true, gradient: GradientColor, index: Int = 0, curvedLines: Bool = true) {
+        self.data = data
+        self._frame = frame
+        self._touchLocation = touchLocation
+        self._showIndicator = showIndicator
+        self._minDataValue = minDataValue
+        self._maxDataValue = maxDataValue
+        self.showFull = showFull
+        self.showBackground = showBackground
+        self.gradient = gradient
+        self.index = index
+        self.curvedLines = curvedLines
     }
     
     public var body: some View {
@@ -101,7 +128,7 @@ public struct Line: View {
 struct Line_Previews: PreviewProvider {
     static var previews: some View {
         GeometryReader{ geometry in
-            Line(data: ChartData(points: [12,-230,10,54]), frame: .constant(geometry.frame(in: .local)), touchLocation: .constant(CGPoint(x: 100, y: 12)), showIndicator: .constant(true), minDataValue: .constant(nil), maxDataValue: .constant(nil))
+            Line(data: ChartData(points: [12,-230,10,54]), frame: .constant(geometry.frame(in: .local)), touchLocation: .constant(CGPoint(x: 100, y: 12)), showIndicator: .constant(true), minDataValue: .constant(nil), maxDataValue: .constant(nil), gradient: GradientColor(start: Colors.GradientPurple, end: Colors.GradientNeonBlue))
         }.frame(width: 320, height: 160)
     }
 }

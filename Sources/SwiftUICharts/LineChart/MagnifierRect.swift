@@ -11,6 +11,12 @@ public struct MagnifierRect: View {
     @Binding var currentNumber: Double
     var valueSpecifier:String
     @Environment(\.colorScheme) var colorScheme: ColorScheme
+    
+    public init(currentNumber: Binding<Double>, valueSpecifier: String) {
+        self._currentNumber = currentNumber
+        self.valueSpecifier = valueSpecifier
+    }
+    
     public var body: some View {
         ZStack{
             Text("\(self.currentNumber, specifier: valueSpecifier)")

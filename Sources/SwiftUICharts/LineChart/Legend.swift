@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct Legend: View {
+public struct Legend: View {
     @ObservedObject var data: ChartData
     @Binding var frame: CGRect
     @Binding var hideHorizontalLines: Bool
@@ -38,7 +38,13 @@ struct Legend: View {
         return CGFloat(points.min() ?? 0)
     }
     
-    var body: some View {
+    public init(data: ChartData, frame: Binding<CGRect>, hideHorizontalLines: Binding<Bool>) {
+        self.data = data
+        self._frame = frame
+        self._hideHorizontalLines = hideHorizontalLines
+    }
+    
+    public var body: some View {
         ZStack(alignment: .topLeading){
             ForEach((0...4), id: \.self) { height in
                 HStack(alignment: .center){

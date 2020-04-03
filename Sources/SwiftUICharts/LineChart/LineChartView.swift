@@ -100,7 +100,8 @@ public struct LineChartView: View {
                         touchLocation: self.$touchLocation,
                         showIndicator: self.$showIndicatorDot,
                         minDataValue: .constant(nil),
-                        maxDataValue: .constant(nil)
+                        maxDataValue: .constant(nil),
+                        gradient: GradientColor(start: Colors.GradientPurple, end: Colors.GradientNeonBlue)
                     )
                 }
                 .frame(width: frame.width, height: frame.height + 30)
